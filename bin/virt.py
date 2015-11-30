@@ -7,6 +7,7 @@ import sys
 
 def proc(cmd,time = 120,sh = True ):
     print("$".format(cmd))
+    p = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=sh)
     try:
         outs, errs = p.communicate(timeout=time)
     except subprocess.TimeoutExpired:
