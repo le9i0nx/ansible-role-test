@@ -8,11 +8,7 @@ import sys
 def proc(cmd,time = 120,sh = True ):
     print("$".format(cmd))
     p = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=sh)
-    try:
-        outs, errs = p.communicate(timeout=time)
-    except subprocess.TimeoutExpired:
-        p.kill()
-        outs, errs = p.communicate()
+    outs, errs = p.communicate(timeout=time)
     return outs,errs,p
 
 ROOT_PATH=os.path.dirname(__file__)
