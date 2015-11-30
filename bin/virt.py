@@ -5,10 +5,10 @@ import subprocess
 import os
 import sys
 
-def proc(cmd,time = 120,sh = True ):
+def proc(cmd,sh = True ):
     print("$".format(cmd))
     p = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=sh)
-    outs, errs = p.communicate(timeout=time)
+    outs, errs = p.communicate()
     return outs,errs,p
 
 ROOT_PATH=os.path.dirname(__file__)
