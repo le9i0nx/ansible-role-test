@@ -18,7 +18,7 @@ ROOT_PATH=os.path.dirname(__file__)
 
 print(proc("sudo apt-get update")[0])
 print(proc("sudo apt-get install -qq sshpass")[0])
-print(proc("ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"")[0)]
+print(proc("ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"")[0])
 print(proc("docker info")[0])
 print(proc("docker version")[0])
 
