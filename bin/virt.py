@@ -38,7 +38,7 @@ for i in doc["galaxy_info"]["platforms"]:
 
 proc("sleep 10")
 proc("docker inspect --format '{{.Config.Image}} ansible_ssh_host={{.NetworkSettings.IPAddress}}' `docker ps -q` >> /etc/ansible/hosts")
-for item in proc("docker inspect --format '{{ .NetworkSettings.IPAddress }}' \`docker ps -q\`")[0]:
+for item in proc("docker inspect --format '{{ .NetworkSettings.IPAddress }}' `docker ps -q`")[0]:
     proc("ssh-keyscan -H {} >> ~/.ssh/known_hosts".format(item))
     proc("sshpass -p '000000' ssh-copy-id root@{}".format(item))
 
