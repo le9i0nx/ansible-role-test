@@ -26,12 +26,12 @@ with open('meta/main.yml', 'r') as f:
     doc = yaml.load(f)
 
 for i in doc["galaxy_info"]["platforms"]:
-    distrib = i["name"]
+    distrib = i["name"].lower()
     for x in i["versions"]:
         dockerfile = "{}/../dockerfile/{}/{}/Dockerfile".format(ROOT_PATH,distrib,x)
         if os.path.exists(dockerfile):
-            print(proc("docker build -f {} -t {}{} .".format(dockerfile,distrib,x))[0])
-            print(proc("docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}{}".format(distrib,x))[0])
+            print(proc("docker build -f {} -t {}_{} .".format(dockerfile,distrib,x))[0])
+            print(proc("docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(distrib,x))[0])
         else:
             print("Critical error. Not found docker files {}".format(dockerfile))
             sys.exit(1)
