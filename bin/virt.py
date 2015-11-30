@@ -10,6 +10,8 @@ def proc(cmd,sh = True ):
     p = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=sh)
     p.wait()
     outs, errs = p.communicate()
+    if p.returncode:
+            print(errs)
     return outs,errs,p
 
 ROOT_PATH=os.path.dirname(__file__)
