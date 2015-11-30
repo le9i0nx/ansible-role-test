@@ -6,7 +6,7 @@ import os
 import sys
 
 def proc(cmd,sh = True ):
-    print("$".format(cmd))
+    print("$ {}".format(cmd))
     p = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=sh)
     p.wait()
     outs, errs = p.communicate()
