@@ -30,7 +30,7 @@ cmd_list = [
     "sudo apt-get update",
     "sudo apt-get install -qq sshpass",
     "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
-    "mkdir zero",
+    "mkdir zero && echo '0' > zero/0",
     ]
 
 for item in cmd_list:
