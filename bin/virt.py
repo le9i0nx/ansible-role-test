@@ -26,7 +26,7 @@ REPO = os.environ['TRAVIS_REPO_SLUG'].split('/')[1]
 PWD = os.environ['PWD']
 
 cmd_list = [
-    "sudo ln -s {}/test/{} /etc/ansible".format(PWD,REPO)
+    "sudo ln -s {}/test/{} /etc/ansible".format(PWD,REPO),
     "sudo apt-get update",
     "sudo apt-get install -qq sshpass",
     "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
