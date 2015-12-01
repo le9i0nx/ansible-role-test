@@ -8,7 +8,17 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*  /tmp/*
 
-ADD ansible-role-test/dockerfile/ubuntu/14.04/init-fake.conf /etc/init/fake-container-events.conf
+RUN echo"# fake some events needed for correct startup other services\n \
+description     \"In-Container Upstart Fake Events\"\n \
+start on startup\n \
+script\n \
+	rm -rf /var/run/*.pid\n \
+	rm -rf /var/run/network/*\n \
+	/sbin/initctl emit stopped JOB=udevtrigger --no-wait\n \
+	/sbin/initctl emit started JOB=udev --no-wait\n \
+	/sbin/initctl emit runlevel RUNLEVEL=3 --no-wait\n \
+end script\n" > /etc/init/fake-container-events.conf
+
 RUN rm /usr/sbin/policy-rc.d; \
     rm /sbin/initctl; dpkg-divert --rename --remove /sbin/initctl
 RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
