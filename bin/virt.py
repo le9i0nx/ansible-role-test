@@ -65,8 +65,8 @@ for item in cmd_list:
 
 for item in proc("docker inspect --format '{{ .NetworkSettings.IPAddress }}' `docker ps -q`")[0].splitlines():
     cmd_list = [
-        "ssh-keyscan -H {} >> ~/.ssh/known_hosts".format(item)
-        "sshpass -p '000000' ssh-copy-id root@{}".format(item)
+        "ssh-keyscan -H {} >> ~/.ssh/known_hosts".format(item),
+        "sshpass -p '000000' ssh-copy-id root@{}".format(item),
         ]
     for x in cmd_list:
         out = proc(x)
