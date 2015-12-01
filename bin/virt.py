@@ -15,7 +15,7 @@ def proc(cmd,sh = True ):
     return outs,errs,p
 
 def job(dockerf, dis , ver):
-    o_cmd = "docker build -f {} -t {}_{} /tmp/zero".format(dockerf,dis,ver)
+    o_cmd = "docker build -f {} -t {}_{} ./zero".format(dockerf,dis,ver)
     o = proc(o_cmd)
     o1_cmd = "docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(dis,ver)
     o1 = proc(o1_cmd)
@@ -30,7 +30,7 @@ cmd_list = [
     "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
     "docker info",
     "docker version",
-    "mkdir /tmp/zero",
+    "mkdir zero",
     ]
 
 for item in cmd_list:
