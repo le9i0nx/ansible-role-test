@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*  /tmp/*
 
-RUN echo"# fake some events needed for correct startup other services\n \
+RUN echo "# fake some events needed for correct startup other services\n \
 description     \"In-Container Upstart Fake Events\"\n \
 start on startup\n \
 script\n \
