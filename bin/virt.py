@@ -22,14 +22,14 @@ def job(dockerf, dis , ver):
     print("$    {}\n{}\n$   {}\n{}".format(o_cmd,o[0],o1_cmd,o1[0]))
     return
 
-ROOT_PATH=os.path.dirname(__file__)
+REPO = os.environ['TRAVIS_REPO_SLUG'].split('/')[1]
+PWD = os.environ['PWD']
 
 cmd_list = [
+    "sudo ln -s {}/test/{} /etc/ansible".format(PWD,REPO)
     "sudo apt-get update",
     "sudo apt-get install -qq sshpass",
     "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
-    "docker info",
-    "docker version",
     "mkdir zero",
     ]
 
@@ -40,6 +40,7 @@ for item in cmd_list:
 with open('meta/main.yml', 'r') as f:
     doc = yaml.load(f)
 
+ROOT_PATH=os.path.dirname(__file__)
 for i in doc["galaxy_info"]["platforms"]:
     distrib = i["name"].lower()
     for x in i["versions"]:
