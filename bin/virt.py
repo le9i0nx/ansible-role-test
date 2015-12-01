@@ -4,23 +4,39 @@ import yaml
 import subprocess
 import os
 import sys
+import threading
 
 def proc(cmd,sh = True ):
-    print("$ {}".format(cmd))
     p = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=sh)
     p.wait()
     outs, errs = p.communicate()
     if p.returncode:
             print(errs)
+            sys.exit(1)
     return outs,errs,p
+
+def job(id, dockerf, dis , ver):
+    o_cmd = "docker build -f {} -t {}_{} .".format(dockerf,dis,ver)
+    o = proc("docker build -f {} -t {}_{} .".format(dockerf,dis,ver))
+    o1_cmd = "docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(dis,ver)
+    o1 = proc("docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(dis,ver))
+    print("$ {}\n{}\n$ {}\n{}".format(o_cmd,o[0],o1_cmd,o1[0]))
+    return
+
 
 ROOT_PATH=os.path.dirname(__file__)
 
-print(proc("sudo apt-get update")[0])
-print(proc("sudo apt-get install -qq sshpass")[0])
-print(proc("ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"")[0])
-print(proc("docker info")[0])
-print(proc("docker version")[0])
+cmd_list = [
+    "sudo apt-get update",
+    "sudo apt-get install -qq sshpass",
+    "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
+    "docker info",
+    "docker version",
+    ]
+
+for item in cmd_list:
+    out = proc(item)
+    print("$ {}\n{}".format(item,out[0]))
 
 with open('meta/main.yml', 'r') as f:
     doc = yaml.load(f)
@@ -30,15 +46,29 @@ for i in doc["galaxy_info"]["platforms"]:
     for x in i["versions"]:
         dockerfile = "{}/../dockerfile/{}/{}/Dockerfile".format(ROOT_PATH,distrib,x)
         if os.path.exists(dockerfile):
-            print(proc("docker build -f {} -t {}_{} .".format(dockerfile,distrib,x))[0])
-            print(proc("docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(distrib,x))[0])
+            threading.Thread(target=job, dockerfile, distrib, x).start()
         else:
             print("Critical error. Not found docker files {}".format(dockerfile))
             sys.exit(1)
 
-proc("sleep 10")
-proc("docker inspect --format '{{.Config.Image}} ansible_ssh_host={{.NetworkSettings.IPAddress}}' `docker ps -q` >> /etc/ansible/hosts")
+for th in threading.enumerate():
+    if th != threading.currentThread():
+        th.join()
+
+cmd_list =[
+    "sleep 10",
+    "docker inspect --format '{{.Config.Image}} ansible_ssh_host={{.NetworkSettings.IPAddress}}' `docker ps -q` >> /etc/ansible/hosts",
+    ]
+for item in cmd_list:
+    out = proc(item)
+    print("$ {}\n{}".format(item,out[0]))
+
 for item in proc("docker inspect --format '{{ .NetworkSettings.IPAddress }}' `docker ps -q`")[0].splitlines():
-    proc("ssh-keyscan -H {} >> ~/.ssh/known_hosts".format(item))
-    proc("sshpass -p '000000' ssh-copy-id root@{}".format(item))
+    cmd_list = [
+        "ssh-keyscan -H {} >> ~/.ssh/known_hosts".format(item)
+        "sshpass -p '000000' ssh-copy-id root@{}".format(item)
+        ]
+    for x in cmd_list:
+        out = proc(x)
+        print("$ {}\n{}".format(x,out[0]))
 
