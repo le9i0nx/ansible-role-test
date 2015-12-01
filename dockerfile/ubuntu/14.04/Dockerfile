@@ -1,5 +1,16 @@
 FROM ubuntu:14.04
 MAINTAINER Aleksej Gavrilov <le9i0nx@gmail.com>
+RUN echo "\n\
+deb http://mirror.yandex.ru/ubuntu/ trusty main restricted universe multiverse\n \
+deb http://mirror.yandex.ru/ubuntu/ trusty-updates main restricted universe multiverse\n \
+deb http://mirror.yandex.ru/ubuntu/ trusty-backports main restricted universe multiverse\n \
+deb-src http://mirror.yandex.ru/ubuntu/ trusty main restricted universe multiverse\n \
+deb-src http://mirror.yandex.ru/ubuntu/ trusty-updates main restricted universe multiverse\n \
+deb-src http://mirror.yandex.ru/ubuntu/ trusty-backports main restricted universe multiverse\n \
+deb http://security.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse\n \
+deb-src http://security.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse\n \
+\n" > /etc/apt/sources.list
+
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update  && \
     apt-get dist-upgrade -y && \
