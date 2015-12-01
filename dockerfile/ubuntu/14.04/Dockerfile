@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*  /tmp/*
 
-ADD ansible-role-test/dockerfile/init-fake.conf /etc/init/fake-container-events.conf
+ADD ansible-role-test/dockerfile/ubuntu/14.04/init-fake.conf /etc/init/fake-container-events.conf
 RUN rm /usr/sbin/policy-rc.d; \
     rm /sbin/initctl; dpkg-divert --rename --remove /sbin/initctl
 RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
