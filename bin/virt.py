@@ -15,14 +15,13 @@ def proc(cmd,sh = True ):
             sys.exit(1)
     return outs,errs,p
 
-def job(id, dockerf, dis , ver):
+def job(dockerf, dis , ver):
     o_cmd = "docker build -f {} -t {}_{} .".format(dockerf,dis,ver)
     o = proc("docker build -f {} -t {}_{} .".format(dockerf,dis,ver))
     o1_cmd = "docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(dis,ver)
     o1 = proc("docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(dis,ver))
     print("$ {}\n{}\n$ {}\n{}".format(o_cmd,o[0],o1_cmd,o1[0]))
     return
-
 
 ROOT_PATH=os.path.dirname(__file__)
 
@@ -46,7 +45,7 @@ for i in doc["galaxy_info"]["platforms"]:
     for x in i["versions"]:
         dockerfile = "{}/../dockerfile/{}/{}/Dockerfile".format(ROOT_PATH,distrib,x)
         if os.path.exists(dockerfile):
-            threading.Thread(target=job, dockerfile, distrib, x).start()
+            threading.Thread(target=job, args=( dockerfile, distrib, x)).start()
         else:
             print("Critical error. Not found docker files {}".format(dockerfile))
             sys.exit(1)
