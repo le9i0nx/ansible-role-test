@@ -52,7 +52,7 @@ for i in doc["galaxy_info"]["platforms"]:
 
 cmd_list =[
     "sleep 10",
-    "docker inspect --format '{{.Config.Image}} ansible_ssh_host={{.NetworkSettings.IPAddress}}' `docker ps -q` >> /etc/ansible/hosts",
+    "docker inspect --format '{{.Config.Image}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` >> /etc/ansible/hosts",
     ]
 for item in cmd_list:
     out = proc(item)
