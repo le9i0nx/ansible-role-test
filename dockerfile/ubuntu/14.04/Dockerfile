@@ -15,7 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update  && \
     apt-get dist-upgrade -y && \
     apt-get install -y \
-        sudo openssh-server && \
+        sudo openssh-server ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*  /tmp/*
 
