@@ -21,7 +21,7 @@ def cmd_list_proc(list_proc):
         print("{}".format(out[0]))
 
 def job(dockerf, dis , ver):
-    o1_cmd = "docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro le9i0nx/ansible-role-test:{0}-{1} {0}_{1}".format(dis,ver)
+    o1_cmd = "docker run --name {0}_{1} -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro le9i0nx/ansible-role-test:{0}-{1}".format(dis,ver)
     print("$   {}".format(o1_cmd))
     o1 = proc(o1_cmd)
     print("{}".format(o1[0]))
@@ -55,7 +55,7 @@ for i in doc["galaxy_info"]["platforms"]:
 
 cmd_list =[
     "sleep 10",
-    "docker inspect --format '{{.Config.Image}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` >> /etc/ansible/hosts",
+    "docker inspect --format '{{.Name}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` | sed -e 's/^.\{1\}//' } >> /etc/ansible/hosts",
     ]
 
 cmd_list_proc(cmd_list)
