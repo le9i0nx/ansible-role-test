@@ -55,7 +55,7 @@ for i in doc["galaxy_info"]["platforms"]:
 
 cmd_list =[
     "sleep 10",
-    "docker inspect --format '{{.Name}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` | sed -e 's/^.\{1\}//' } >> /etc/ansible/hosts",
+    "docker inspect --format '{{.Name}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` | sed -e 's/^.\{1\}//' >> /etc/ansible/hosts",
     ]
 
 cmd_list_proc(cmd_list)
