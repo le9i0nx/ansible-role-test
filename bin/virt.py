@@ -14,12 +14,21 @@ def proc(cmd,sh = True ):
             sys.exit(1)
     return outs,errs,p
 
+def cmd_list_proc(list_proc):
+    for item in list_proc:
+        print("$    {}".format(item))
+        out = proc(item)
+        print("{}".format(out[0]))
+
 def job(dockerf, dis , ver):
     o_cmd = "docker build -f {} -t {}_{} .".format(dockerf,dis,ver)
+    print("$    {}".format(o_cmd))
     o = proc(o_cmd)
+    print("{}".format(o[0]))
     o1_cmd = "docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(dis,ver)
+    print("$   {}".format(o1_cmd))
     o1 = proc(o1_cmd)
-    print("$    {}\n{}\n$   {}\n{}".format(o_cmd,o[0],o1_cmd,o1[0]))
+    print("{}".format(o1[0]))
     return
 
 REPO = os.environ['TRAVIS_REPO_SLUG'].split('/')[1]
@@ -32,9 +41,7 @@ cmd_list = [
     "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
     ]
 
-for item in cmd_list:
-    out = proc(item)
-    print("$    {}\n{}".format(item,out[0]))
+cmd_list_proc(cmd_list)
 
 with open('meta/main.yml', 'r') as f:
     doc = yaml.load(f)
@@ -54,16 +61,13 @@ cmd_list =[
     "sleep 10",
     "docker inspect --format '{{.Config.Image}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` >> /etc/ansible/hosts",
     ]
-for item in cmd_list:
-    out = proc(item)
-    print("$ {}\n{}".format(item,out[0]))
+
+cmd_list_proc(cmd_list)
 
 for item in proc("docker inspect --format '{{ .NetworkSettings.IPAddress }}' `docker ps -q`")[0].splitlines():
     cmd_list = [
         "ssh-keyscan -H {} >> ~/.ssh/known_hosts".format(item),
         "sshpass -p '000000' ssh-copy-id root@{}".format(item),
         ]
-    for x in cmd_list:
-        out = proc(x)
-        print("$ {}\n{}".format(x,out[0]))
+    cmd_list_proc(cmd_list)
 
