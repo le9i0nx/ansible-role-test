@@ -7,7 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update  && \
     apt-get dist-upgrade -y && \
     apt-get install -y \
-        sudo openssh-server locales python ca-certificates && \
+        sudo openssh-server locales python ca-certificates iproute2 && \
     locale-gen --purge en_US.UTF-8 && \
     echo -e 'LANG="en_US.UTF-8"\nLANGUAGE="en_US:en"\n' > /etc/default/locale && \
     apt-get clean && \
