@@ -21,11 +21,7 @@ def cmd_list_proc(list_proc):
         print("{}".format(out[0]))
 
 def job(dockerf, dis , ver):
-    o_cmd = "docker build -f {} -t {}_{} .".format(dockerf,dis,ver)
-    print("$    {}".format(o_cmd))
-    o = proc(o_cmd)
-    print("{}".format(o[0]))
-    o1_cmd = "docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro {}_{}".format(dis,ver)
+    o1_cmd = "docker run -d --cap-add=SYS_ADMIN -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro le9i0nx/ansible-role-test:{0}-{1} {0}_{1}".format(dis,ver)
     print("$   {}".format(o1_cmd))
     o1 = proc(o1_cmd)
     print("{}".format(o1[0]))
