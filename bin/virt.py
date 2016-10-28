@@ -30,10 +30,17 @@ def job(dockerf, dis , ver):
 REPO = os.environ['TRAVIS_REPO_SLUG'].split('/')[1]
 PWD = os.environ['PWD']
 
+cmd_debug =[
+    "cat /etc/ansible/hosts",
+    "ps ax",
+    "pstree -up",
+    ]
+
 cmd_list = [
     "sudo ln -s {}/test/{} /etc/ansible".format(PWD,REPO),
     ]
 
+cmd_list_proc(cmd_debug)
 cmd_list_proc(cmd_list)
 
 with open('meta/main.yml', 'r') as f:
@@ -56,10 +63,12 @@ cmd_list =[
     "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
     "sleep 10",
     "docker inspect --format '{{.Name}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` | sed -e 's/^.\{1\}//' >> /etc/ansible/hosts",
-    "cat /etc/ansible/hosts",
     ]
 
+
+cmd_list_proc(cmd_debug)
 cmd_list_proc(cmd_list)
+cmd_list_proc(cmd_debug)
 
 for item in proc("docker inspect --format '{{ .NetworkSettings.IPAddress }}' `docker ps -q`")[0].splitlines():
     cmd_list = [
