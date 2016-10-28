@@ -61,7 +61,6 @@ cmd_list =[
     "sudo apt-get update",
     "sudo apt-get install -qq sshpass",
     "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
-    "sleep 10",
     "docker inspect --format '{{.Name}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` | sed -e 's/^.\{1\}//' >> /etc/ansible/hosts",
     ]
 
@@ -72,6 +71,7 @@ cmd_list_proc(cmd_debug)
 
 for item in proc("docker inspect --format '{{ .NetworkSettings.IPAddress }}' `docker ps -q`")[0].splitlines():
     cmd_list = [
+        "while ! nc -z {} 22; do sleep 1; done;"format(item),
         "ssh-keyscan -H {} >> ~/.ssh/known_hosts".format(item),
         "cat ~/.ssh/known_hosts",
         "sshpass -p '000000' ssh-copy-id root@{}".format(item),
