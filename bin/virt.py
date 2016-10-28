@@ -32,9 +32,6 @@ PWD = os.environ['PWD']
 
 cmd_list = [
     "sudo ln -s {}/test/{} /etc/ansible".format(PWD,REPO),
-    "sudo apt-get update",
-    "sudo apt-get install -qq sshpass",
-    "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
     ]
 
 cmd_list_proc(cmd_list)
@@ -54,8 +51,12 @@ for i in doc["galaxy_info"]["platforms"]:
             sys.exit(1)
 
 cmd_list =[
+    "sudo apt-get update",
+    "sudo apt-get install -qq sshpass",
+    "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
     "sleep 10",
     "docker inspect --format '{{.Name}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` | sed -e 's/^.\{1\}//' >> /etc/ansible/hosts",
+    "cat /etc/ansible/hosts",
     ]
 
 cmd_list_proc(cmd_list)
