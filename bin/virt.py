@@ -71,9 +71,8 @@ cmd_list_proc(cmd_debug)
 
 for item in proc("docker inspect --format '{{ .NetworkSettings.IPAddress }}' `docker ps -q`")[0].splitlines():
     cmd_list = [
-        "while ! nc -z {} 22; do sleep 1; done;".format(item),
+        "while ! nc -z {} 22; do sleep .1; done;".format(item),
         "ssh-keyscan -H {} >> ~/.ssh/known_hosts".format(item),
-        "cat ~/.ssh/known_hosts",
         "sshpass -p '000000' ssh-copy-id root@{}".format(item),
         ]
     cmd_list_proc(cmd_list)
