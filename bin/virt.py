@@ -32,7 +32,7 @@ PWD = os.environ['PWD']
 
 cmd_debug =[
     "cat /etc/ansible/hosts",
-    "ps ax",
+    "ps aufx",
     "pstree -up",
     ]
 
@@ -40,8 +40,8 @@ cmd_list = [
     "sudo ln -s {}/test/{} /etc/ansible".format(PWD,REPO),
     ]
 
-cmd_list_proc(cmd_debug)
 cmd_list_proc(cmd_list)
+cmd_list_proc(cmd_debug)
 
 with open('meta/main.yml', 'r') as f:
     doc = yaml.load(f)
