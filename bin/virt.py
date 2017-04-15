@@ -31,7 +31,7 @@ REPO = os.environ['TRAVIS_REPO_SLUG'].split('/')[1]
 PWD = os.environ['PWD']
 
 cmd_debug =[
-    "cat /etc/ansible/inventory/hosts",
+    "cat ./inventory/hosts",
     "ps aufx",
     "pstree -up",
     ]
