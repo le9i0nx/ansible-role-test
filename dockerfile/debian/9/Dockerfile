@@ -31,7 +31,7 @@ RUN systemctl mask \
     display-manager.service \
     graphical.target
 
-RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -ri 's/^#PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN echo "root:000000" | chpasswd
 
 VOLUME ["/sys/fs/cgroup"]
