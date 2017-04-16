@@ -57,7 +57,7 @@ for i in doc["galaxy_info"]["platforms"]:
             print("Critical error. Not found docker files {}".format(dockerfile))
             sys.exit(1)
 
-for i in doc["dependencies"]
+for i in doc["dependencies"]:
     role = i["role"]
     cmd_galaxy =[ "ansible-galaxy install {}".format(role), ]
     cmd_list_proc(cmd_galaxy)
