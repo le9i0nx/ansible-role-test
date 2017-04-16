@@ -10,9 +10,9 @@ def proc(cmd,sh = True ):
     p.wait()
     outs, errs = p.communicate()
     if p.returncode:
-            print(errs)
-            sys.exit(1)
-     return outs,errs,p
+        print(errs)
+        sys.exit(1)
+    return outs,errs,p
 
 def cmd_list_proc(list_proc):
     for item in list_proc:
