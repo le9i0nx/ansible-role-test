@@ -1,0 +1,20 @@
+---
+
+apt_packages: [ 'ca-certificates' ]
+
+device_x:
+  - id: "GRE4U5C-DNNXGJQ-RVL2EX6-FGK5KSM-7X5ILVM-TDMJ6UH-FLK7NWV-VIC6VAN"
+    name: "x"
+role_syncthing_data:
+  folders:
+    - inventory_hosts: '{{ groups.all }}'
+      path: '/home/'
+      id: 'home'
+      devices_del:
+        - "{{ device_x }}"
+    - inventory_hosts: '{{ groups.all }}'
+      path: '/opt/'
+      id: 'opt'
+      devices_add:
+        - "{{ device_x }}"
+

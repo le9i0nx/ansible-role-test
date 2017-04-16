@@ -1,0 +1,11 @@
+---
+
+govpn__interface: 'star_test'
+
+govpn__network:
+  name: '{{ govpn__interface }}'
+  server: 'debian_stretch'
+  groups: [ 'test_hosts' ]
+  interface: '{{ govpn__interface }}'
+  port: '1194'
+

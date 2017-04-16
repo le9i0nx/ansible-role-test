@@ -12,7 +12,7 @@ def proc(cmd,sh = True ):
     if p.returncode:
             print(errs)
             sys.exit(1)
-    return outs,errs,p
+     return outs,errs,p
 
 def cmd_list_proc(list_proc):
     for item in list_proc:
@@ -31,7 +31,6 @@ REPO = os.environ['TRAVIS_REPO_SLUG'].split('/')[1]
 PWD = os.environ['PWD']
 
 cmd_debug =[
-    "ls -la /etc/ansible/",
     "cat /etc/ansible/inventory/hosts",
     "ps aufx",
     "pstree -up",
@@ -58,13 +57,17 @@ for i in doc["galaxy_info"]["platforms"]:
             print("Critical error. Not found docker files {}".format(dockerfile))
             sys.exit(1)
 
+for i in doc["dependencies"]
+    role = i["role"]
+    cmd_galaxy =[ "ansible-galaxy install {}".format(role), ]
+    cmd_list_proc(cmd_galaxy)
+
 cmd_list =[
     "sudo apt-get update",
     "sudo apt-get install -qq sshpass",
     "ssh-keygen -b 2048 -t rsa -f $HOME/.ssh/id_rsa -q -N \"\"",
     "docker inspect --format '{{.Name}} ansible_host={{.NetworkSettings.IPAddress}} ansible_user=root' `docker ps -q` | sed -e 's/^.\{1\}//' >> /etc/ansible/inventory/hosts",
     ]
-
 
 cmd_list_proc(cmd_debug)
 cmd_list_proc(cmd_list)

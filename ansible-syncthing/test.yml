@@ -1,0 +1,13 @@
+---
+
+- name: syncthing install
+  hosts: [ 'debops_all_hosts', 'debops_service_syncthing', 'test_hosts' ]
+  become: True
+  become_method: sudo
+
+  roles:
+
+    - role: le9i0nx.syncthing
+      tags: [ 'role::syncthing' ]
+
+## vim: foldmethod=marker:tabstop=2:shiftwidth=2:softtabstop=2

@@ -1,0 +1,7 @@
+---
+
+apt_packages: [ 'ca-certificates' ]
+
+rspamd_repositories_key:
+
+  - url: "http://rspamd.com/apt-stable/gpg.key"
